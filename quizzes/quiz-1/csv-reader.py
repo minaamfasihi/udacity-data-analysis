@@ -1,13 +1,20 @@
 import unicodecsv
 
-with open('..\..\..\Resources\enrollments.csv', 'rb') as f:
-	reader = unicodecsv.DictReader(f)
-	enrollments = list(reader)
+def read_file(path, mode):
+	with open(path, mode) as f:
+		handler = unicodecsv.DictReader(f)
+		csv_file = list(handler)
+
+	return csv_file
+
+enrollments = read_file('..\..\..\Resources\enrollments.csv', 'rb')
 
 print enrollments[0]
 
-with open('..\..\..\Resources\daily_engagement.csv', 'rb') as f:
-	reader = unicodecsv.DictReader(f)
-	daily_engagement = list(reader)
+daily_engagement = read_file('..\..\..\Resources\daily_engagement.csv', 'rb')
 
 print daily_engagement[0]
+
+project_submissions = read_file('..\..\..\Resources\project_submissions.csv', 'rb')
+
+print project_submissions[0]
