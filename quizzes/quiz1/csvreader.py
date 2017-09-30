@@ -2,11 +2,11 @@ import unicodecsv
 from datetime import datetime as dt
 
 def read_file(path, mode):
-	with open(path, mode) as f:
-		handler = unicodecsv.DictReader(f)
-		csv_file = list(handler)
+  with open(path, mode) as f:
+    handler = unicodecsv.DictReader(f)
+    csv_file = list(handler)
 
-	return csv_file
+  return csv_file
 
 def parse_date(date):
   if date == '':
