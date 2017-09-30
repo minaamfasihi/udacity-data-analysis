@@ -74,3 +74,27 @@ for enrollment in enrollments:
     print enrollment
 
 print surprising_enrollment_records
+
+udacity_test_accounts = set()
+for enrollment in enrollments:
+  if enrollment['is_udacity']:
+    udacity_test_accounts.add(enrollment['account_key'])
+
+print len(udacity_test_accounts)
+
+def remove_udacity_accounts(data):
+  non_udacity_data = []
+  for data_point in data:
+    if data_point['account_key'] not in udacity_test_accounts:
+      non_udacity_data.append(data)
+
+  return non_udacity_data
+
+non_udacity_enrollments = remove_udacity_accounts(enrollments)
+non_udacity_engagement = remove_udacity_accounts(daily_engagement)
+non_udacity_submissions = remove_udacity_accounts(project_submissions)
+
+print len(non_udacity_enrollments)
+print len(non_udacity_engagement)
+print len(non_udacity_submissions)
+
