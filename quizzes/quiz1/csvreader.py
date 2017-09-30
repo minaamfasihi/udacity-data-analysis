@@ -69,7 +69,7 @@ print "Total number of unique students", len(unique_project_submitters)
 surprising_enrollment_records = 0
 for enrollment in enrollments:
   student = enrollment['account_key']
-  if student not in unique_daily_engagement_students:
+  if student not in unique_daily_engagement_students and enrollment['cancel_date'] != enrollment['join_date']:
     surprising_enrollment_records += 1
     print enrollment
 
