@@ -98,3 +98,9 @@ print len(non_udacity_enrollments)
 print len(non_udacity_engagement)
 print len(non_udacity_submissions)
 
+paid_students = {}
+for entry in enrollments:
+  if (entry['days_to_cancel'] == None or entry['days_to_cancel'] > 7) and entry['account_key'] not in udacity_test_accounts:
+    paid_students[entry['account_key']] = entry['join_date']
+
+print "Total number of paid students: ", len(paid_students)
