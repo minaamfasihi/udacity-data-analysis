@@ -86,7 +86,7 @@ def remove_udacity_accounts(data):
   non_udacity_data = []
   for data_point in data:
     if data_point['account_key'] not in udacity_test_accounts:
-      non_udacity_data.append(data)
+      non_udacity_data.append(data_point)
 
   return non_udacity_data
 
@@ -99,8 +99,34 @@ print len(non_udacity_engagement)
 print len(non_udacity_submissions)
 
 paid_students = {}
-for entry in enrollments:
-  if (entry['days_to_cancel'] == None or entry['days_to_cancel'] > 7) and entry['account_key'] not in udacity_test_accounts:
-    paid_students[entry['account_key']] = entry['join_date']
+
+for enrollment in non_udacity_enrollments:
+  if not enrollment['is_canceled'] or enrollment['days_to_cancel'] > 7:
+    account_key = enrollment['account_key']
+    enrollment_date = enrollment['join_date']
+
+    if account_key not in paid_students or \
+      enrollment_date > paid_students[account_key]:
+      paid_students[account_key] = enrollment_date
 
 print "Total number of paid students: ", len(paid_students)
+
+def within_one_week(join_date, engagement_date):
+  time_delta = engagement_date - join_date
+  return time_delta.days < 7
+
+def remove_free_trial_cancels(data):
+  new_data = []
+  for data_point in data:
+    if data_point['account_key'] in paid_students:
+      new_data.append(data_point)
+
+  return new_data
+
+paid_enrollments = remove_free_trial_cancels(non_udacity_enrollments)
+paid_engagement = remove_free_trial_cancels(non_udacity_engagement)
+paid_submissions = remove_free_trial_cancels(non_udacity_submissions)
+
+print len(paid_enrollments)
+print len(paid_engagement)
+print len(paid_submissions)
