@@ -1,5 +1,7 @@
 import unicodecsv
 from datetime import datetime as dt
+from collections import defaultdict
+import numpy as np
 
 def read_file(path, mode):
   with open(path, mode) as f:
@@ -141,3 +143,24 @@ for engagement_record in paid_engagement:
     paid_engagement_in_first_week.append(engagement_record)
 
 print len(paid_engagement_in_first_week)
+
+engagement_by_account = defaultdict(list)
+
+# appends the respective engagements to each student
+
+for engagement_record in paid_engagement_in_first_week:
+  account_key = engagement_record['account_key']
+  engagement_by_account[account_key].append(engagement_record)
+
+total_minutes_by_account = {}
+for account_key, engagement_for_student in engagement_by_account.items():
+  total_minutes = 0
+  for engagement_record in engagement_for_student:
+    total_minutes += engagement_record['total_minutes_visited']
+  total_minutes_by_account[account_key] = total_minutes
+
+total_minutes = total_minutes_by_account.values()
+print "Mean: ", np.mean(total_minutes)
+print "Standard Deviation: ", np.std(total_minutes)
+print "Minimum: ", np.min(total_minutes)
+print "Maximum: ", np.max(total_minutes)
